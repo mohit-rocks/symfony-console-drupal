@@ -1,0 +1,68 @@
+<section id="fragments">
+  <h2>Key concepts</h2>
+  <div class="items">
+    <div class="item fragment">
+      <div class="item-icon">
+        <img src="https://img.icons8.com/color/48/000000/binary-file.png" alt="Recycle Icon">
+      </div>
+      <div>
+        Provide an entrypoint bin file which can be consumed by symfony/runtime
+      </div>
+    </div>
+    
+    <div class="item fragment">
+      <div class="item-icon">
+        <img src="https://getcomposer.org/img/logo-composer-transparent.png" alt="Composer Icon" style="width: 48px; height: 48px;">
+      </div>
+      <div>
+        <strong>Composer.json</strong> changes needed
+      </div>
+    </div>
+    
+    <div class="item fragment">
+      <div class="item-icon">
+        <img src="https://img.icons8.com/color/48/000000/server.png" alt="Server Icon">
+      </div>
+      <div>Create a service that works as registry of command</div>
+    </div>
+    
+    <div class="item fragment">
+      <div class="item-icon">
+        <img src="https://img.icons8.com/color/48/000000/computer.png" alt="Monitor Icon">
+      </div>
+      <div>Adds a compiler pass to core</div>
+    </div>
+  </div>
+  
+  <!-- Speaker note starts -->
+  <aside class="notes">
+    The way overall implementation is done in Drupal core, there are 4 steps
+    <ol>
+      <li>
+        Provide an entyproint bin file which can be wrapped by symfony/runtime.
+      </li>
+      <li>Composer.json changes needed
+        <ul>
+          <li>Add changes to composer.json and add symfony/runtime</li>
+          <li>Adds bin file so it can be placed in vendor/bin, available in <em>PATH</em></li>
+        </ul>
+      </li>
+      <li>Create a service that works as registry of command
+        <ul>
+          <li>We can call it as "console.command_loader"</li>
+          <li>With this we register a service that acts as a command loader in the Symfony console component</li>
+          <li>We can make it public, add a specific tag to control its behavior, and passing specific arguments to its constructor</li>
+          <li>This service is responsible for loading console commands in a lazy manner</li>
+        </ul>
+      </li>
+      <li>Adds a compiler pass to core
+        <ul>
+          <li>Which scans src/Command/ directories in enabled extensions for commands, and creates tagged command services from them</li>
+          <li>Adds tagged command services to the "console.command_loader service registry"</li>
+        </ul>
+      </li>
+    </ol>
+  </aside>
+  <!-- Speaker note ends -->
+
+</section>

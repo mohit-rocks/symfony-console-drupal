@@ -1,0 +1,41 @@
+<section>
+  <h2>Compiler pass implementation</h2>
+  <ul>
+    <li>Allows to manipulate services in container</li>
+    <li>We've added a new Service provider in Drupal</li>
+    <li>Service provider will call <code>$container->addCompilerPass()</code></li>
+  </ul>
+  
+  <!-- Speaker note starts -->
+  <aside class="notes">
+    <ul>
+      <li>Compiler passes allow you to manipulate other service definitions registered with the service container.</li>
+      <li>In Drupal, we can simply implement new Service provider extending ServiceProviderBase and register new compiler pass in the container.</li>
+      <li>Let’s see how it looks like.</li>
+    </ul>
+  </aside>
+  <!-- Speaker note ends -->
+
+</section>
+
+<section>
+  <pre data-id="code-animation"><code class="hljs php" data-trim data-line-numbers="3-5|">
+    final class DexConsoleServiceProvider extends ServiceProviderBase {
+    
+      public function register(ContainerBuilder $container): void {
+        $container->addCompilerPass(new DexCompilerPass(), priority: 0);
+      }
+    }
+  </code></pre>
+  <h6>Service provider</h6>
+  
+  <!-- Speaker note starts -->
+  <aside class="notes">
+    <ul>
+      <li>Here, we are simply registering our compiler pass class.</li>
+      <li>Let’s see how it compiler pass looks like in dex_console module.</li>
+    </ul>
+  </aside>
+  <!-- Speaker note ends -->
+
+</section>

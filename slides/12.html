@@ -1,0 +1,130 @@
+<section>
+  <h2>Compiler pass in dex_console</h2>
+  
+  <pre data-id="code-animation"><code class="hljs php" data-trim data-line-numbers="3-5|">
+    final class DexConsoleServiceProvider extends ServiceProviderBase {
+    
+      public function register(ContainerBuilder $container): void {
+        $container->addCompilerPass(new DexCompilerPass(), priority: 0);
+      }
+    }
+  </code></pre>
+  
+  <!-- Speaker note starts -->
+  <aside class="notes">
+    <ul>
+      <li>Compiler passes allow you to manipulate other service definitions registered with the service container.</li>
+      <li>In Drupal, we can simply implement new Service provider extending ServiceProviderBase and register new compiler pass in the container.</li>
+      <li>Let’s see how Compiler pass looks like.</li>
+    </ul>
+  </aside>
+  <!-- Speaker note ends -->
+
+</section>
+
+<section>
+  <pre data-id="code-animation"><code class="hljs php" data-trim data-line-numbers="10|69-90|29-36|43-55|58-63">
+    public function process(ContainerBuilder $container): void {
+    $serviceIds = [];
+
+    /** @var class-string[] $consoleClasses */
+    $consoleClasses = [];
+    foreach ($container->findTaggedServiceIds('console.command') as $id => $tags) {
+      $consoleClasses[] = $container->getDefinition($id)->getClass();
+    }
+
+    foreach ($this->getClasses($container->getParameter('container.namespaces')) as $className) {
+      // Don't create a service definition if this class is already a service.
+      if ($container->hasDefinition($className) || $container->hasAlias($className)) {
+        continue;
+      }
+
+      $reflection = new \ReflectionClass($className);
+      while ($parent = $reflection->getParentClass()) {
+        if (!class_exists($parent->getName())) {
+          continue;
+        }
+        $reflection = $parent;
+      }
+
+      // Don't create a service definition if this class is already a service.
+      if (in_array($className, $consoleClasses, TRUE)) {
+        continue;
+      }
+
+      $definition = new Definition($className);
+      $definition
+        ->setAutoconfigured(TRUE)
+        ->setAutowired(TRUE)
+        ->setPublic(TRUE)
+        ->setTags(['console.command' => []]);
+
+      $container->setDefinition($className, $definition);
+    }
+
+    // Register commands from above to the container.
+    $commandServices = $container->findTaggedServiceIds('console.command', TRUE);
+    $lazyCommandRefs = [];
+    $lazyCommandMap = [];
+    foreach ($commandServices as $id => $tags) {
+      $definition = $container->getDefinition($id);
+      /** @var class-string<\Symfony\Component\Console\Command\Command> $class */
+      $class = $container->getParameterBag()->resolveValue($definition->getClass());
+
+      $aliases = $tags[0]['command'] ?? NULL;
+
+      // Pulls in the command name from the PHP attribute:
+      $lazyCommandMap[$commandName] = $id;
+      foreach ($aliases as $alias) {
+        $lazyCommandMap[$alias] = $id;
+      }
+      $lazyCommandRefs[$id] = new Reference($id);
+    }
+
+    $container
+      ->getDefinition('console.command_loader')
+      ->setClass(ContainerCommandLoader::class)
+      ->setArguments([ServiceLocatorTagPass::register($container, $lazyCommandRefs), $lazyCommandMap]);
+
+    $container->setParameter('console.command.ids', $serviceIds);
+  }
+
+  /**
+   * Get command classes for the provided namespaces.
+   */
+  private function getClasses(array $namespaces): \Generator {
+    foreach ($namespaces as $namespace => $dirs) {
+      // Abstract snippet, removed a few snippets from actual code.
+      $dirs = (array) $dirs;
+      foreach ($dirs as $dir) {
+        $dir .= '/Command';
+        $namespace .= '\\Command';
+
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST);
+
+        foreach ($iterator as $fileinfo) {
+          $subDir = $subDir->getSubPath();
+          $subDir = $subDir !== '' ? str_replace(DIRECTORY_SEPARATOR, '\\', $subDir) . '\\' : '';
+          $class = $namespace . '\\' . $subDir . $fileinfo->getBasename('.php');
+          $reflectionClass = new \ReflectionClass($class);
+
+          if (count($reflectionClass->getAttributes(AsCommand::class)) > 0) {
+            yield $class;
+          }
+        }
+      }
+    }
+  }
+  </code></pre>
+  <h6>Dex compiler pass --- @todo: Write speaker notes for this. Clear all the doubts and concepts. Include dependency injection.</h6>
+  
+  <!-- Speaker note starts -->
+  <aside class="notes">
+    <ul>
+      <li>Here, we are simply registering our compiler pass class.</li>
+      <li>Let’s see how it compiler pass looks like in dex_console module.</li>
+    </ul>
+  </aside>
+  <!-- Speaker note ends -->
+
+</section>
