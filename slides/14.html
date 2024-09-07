@@ -1,0 +1,48 @@
+<h2>Create console commands</h2>
+<section>
+  <pre data-id="code-animation">
+    <code class="hljs php" data-trim data-line-numbers="1-4|7-13|15|20-24">
+      #[AsCommand(
+        name: 'console_demo:service_argument',
+        description: 'An example command.',
+      )]
+      final class ServiceArgumentExample extends Command {
+      
+        public function __construct(
+          private readonly TimeInterface $dateTime,
+          #[Autowire(service: 'cache.data')]
+          private readonly CacheBackendInterface $cacheData,
+        ) {
+          parent::__construct();
+        }
+
+        protected function configure(): void {...}
+      
+        /**
+         * {@inheritdoc}
+         */
+        protected function execute(InputInterface $input, OutputInterface $output): int {
+          $io = new SymfonyStyle($input, $output);
+          $io->note('Command aborted.');
+          return static::SUCCESS;
+        }
+      }
+    </code>
+  </pre>
+  
+  <!-- Speaker note starts -->
+  <aside class="notes">
+    <ul>
+      <li>Now, let's see the basic implementation of console command.</li>
+      <li>We can use AsCommand attribute to create new commands.</li>
+      <li>Typically, autowiring automatically happens because we took care of that in compiler pass.</li>
+      <li>If that doesn't happen, we can use AutoWire attribute of symfony.</li>
+      <li>Provide configuration options</li>
+      <li>Execute method</li>
+      <li>Styles in execute method</li>
+      <li>Dry run option. It allows to run command without mutating state of application.</li>
+      <li>Code in the terminal</li>
+    </ul>
+  </aside>
+  <!-- Speaker note ends -->
+</section>
