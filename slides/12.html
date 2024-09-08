@@ -23,7 +23,7 @@
 </section>
 
 <section>
-  <pre data-id="code-animation"><code class="hljs php" data-trim data-line-numbers="10|69-90|29-36|43-55|58-63">
+  <pre data-id="code-animation"><code class="hljs php" data-trim data-line-numbers="10|69-90|29-36|40-55|58-63">
     public function process(ContainerBuilder $container): void {
     $serviceIds = [];
 
@@ -121,8 +121,33 @@
   <!-- Speaker note starts -->
   <aside class="notes">
     <ul>
-      <li>Here, we are simply registering our compiler pass class.</li>
-      <li>Let’s see how it compiler pass looks like in dex_console module.</li>
+      <li>The main purpose of compiler pass is to find all the console commands.</li>
+      <li>Register them as services so `console.command_loader` service can load the classes</li>
+      <li>Now let's see step by step how it looks like.</li>
+      <li>Initially, we are starting with `getClass()` method.</li>
+      <li>It is basically iterating over /src/Command folder and defined namespace and check the files that are declared with `AsCommand` attribute</li>
+      <li>So in our snippet, we initialize the iterator, check for the classes that has AsCommand attribute.</li>
+      <li>Let's see the next step</li>
+      <li>Now, we will iterate through each class</li>
+      <li>See if class implements the command base class</li>
+      <li>Later create the service definition.</li>
+      <li>Add autowire, autoconfigure and add `console.command` tag</li>
+      <li>Tag is useful because we will use it next</li>
+      <li>Now we will load all the services and iterate through all the services</li>
+      <li>We will create an array of the commands that needs to lazy loaded</li>
+      <li>For that we will create an array of Reference objects</li>
+      <li>Reference keeps a reference of the current service</li>
+      <li>ServiceLocatorTagPass is a utility class that helps manage service locators.</li>
+      <li>Service locators are service containers designed to retrieve services lazily and efficiently.</li>
+      <li>It is primarily used in dependency injection (DI) to handle services that should only be instantiated when needed</li>
+      <li>So in our case, we will create a service and assign lazycommandmap to the service</li>
+      <li>So we can load the services whenever required using `console.command_loader` service</li>
+      <li>Last step is we set `console.command.ids` with all service ids</li>
+      <li>Why we need to do that?</li>
+      <li>Because we will use that container param to load all the services</li>
+      <li>Later use those in `add()` method when we run the command.</li>
+      <li>with this we have compiler pass setup and all the commands are registerd.</li>
+      <li>Let’s see how it symfony/runtime looks like in dex_console module.</li>
     </ul>
   </aside>
   <!-- Speaker note ends -->
