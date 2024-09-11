@@ -101,7 +101,8 @@
           <li>First we will include our script.</li>
           <li>Later in line 13 we are initializing the SymfonyRuntime</li>
           <li>Line 18-21 will find the resolver and will call the resolve method</li>
-          <li>Since it is a closure, SymfonyRuntime will call <em>ClosureResolver</em>, resolve() method of resolver will run the application.</li>
+          <li>Since it is a closure, SymfonyRuntime will call <em>ClosureResolver</em>, resolve() method of resolver will return the application and the argument.</li>
+          <li>Later we initialize the application with te arguments.</li>
           <li>On line 22-27, we will get the runner for the application and eventually runtime will run the application.</li>
           <li>In our case, it will call <em>ClosureRunner</em> instance to run application</li>
         </ul>
