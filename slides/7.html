@@ -39,9 +39,8 @@
   <aside class="notes">
     The way overall implementation is done in Drupal core, there are 4 steps
     <ol>
-      <li>
-        Provide an entyproint bin file which can be wrapped by symfony/runtime.
-      </li>
+      <li>Provide an entyproint bin file which can be wrapped by symfony/runtime.</li>
+      <li>That binary file includes the autoload_runtime.php.</li>
       <li>Composer.json changes needed
         <ul>
           <li>Add changes to composer.json and add symfony/runtime</li>
