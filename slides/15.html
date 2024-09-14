@@ -14,15 +14,9 @@
   <!-- Speaker note starts -->
   <aside class="notes">
     <ul>
-      <li>Now, let's see the basic implementation of console command.</li>
-      <li>We can use AsCommand attribute to create new commands.</li>
-      <li>Typically, autowiring automatically happens because we took care of that in compiler pass.</li>
-      <li>If that doesn't happen, we can use AutoWire attribute of symfony.</li>
-      <li>Provide configuration options</li>
-      <li>Execute method</li>
-      <li>Styles in execute method</li>
-      <li>Dry run option. It allows to run command without mutating state of application.</li>
-      <li>Code in the terminal</li>
+      <li>Testing the console command is a straightforward approach.</li>
+      <li>Since all the console commands are registered as a service we need to fetch the service in pass in command tester class</li>
+      <li>So this is not a complex thing to test the commands</li>
     </ul>
   </aside>
   <!-- Speaker note ends -->

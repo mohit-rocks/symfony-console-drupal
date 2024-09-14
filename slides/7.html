@@ -41,6 +41,8 @@
     <ol>
       <li>Provide an entyproint bin file which can be wrapped by symfony/runtime.</li>
       <li>That binary file includes the autoload_runtime.php.</li>
+      <li>autoload_runtime.php will take the callable defined in binary file and find appropriate runner</li>
+      <li>Later Symfony runtime will take that runner instance and </li>
       <li>Composer.json changes needed
         <ul>
           <li>Add changes to composer.json and add symfony/runtime</li>
