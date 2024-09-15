@@ -1,47 +1,150 @@
-<h2>Create console commands</h2>
+<h2>symfony/runtime in dex_console</h2>
 <section>
   <pre data-id="code-animation">
-    <code class="hljs php" data-trim data-line-numbers="1-4|7-13|15|20-24">
-      #[AsCommand(
-        name: 'console_demo:service_argument',
-        description: 'An example command.',
-      )]
-      final class ServiceArgumentExample extends Command {
-      
-        public function __construct(
-          private readonly TimeInterface $dateTime,
-          #[Autowire(service: 'cache.data')]
-          private readonly CacheBackendInterface $cacheData,
-        ) {
-          parent::__construct();
-        }
+    <code class="hljs php" data-trim data-line-numbers>
+      #!/usr/bin/env php
 
-        protected function configure(): void {...}
+      require_once dirname($GLOBALS['_composer_autoload_path']) . '/autoload_runtime.php';
       
-        /**
-         * {@inheritdoc}
-         */
-        protected function execute(InputInterface $input, OutputInterface $output): int {
-          $io = new SymfonyStyle($input, $output);
-          $io->note('Command aborted.');
-          return static::SUCCESS;
-        }
-      }
+      return static function () {
+      
+      };
     </code>
   </pre>
+  <h6> Code of (dex) application file</h6>
   
   <!-- Speaker note starts -->
   <aside class="notes">
     <ul>
-      <li>Now, let's see the basic implementation of console command.</li>
-      <li>We can use AsCommand attribute to create new commands.</li>
-      <li>Typically, autowiring automatically happens because we took care of that in compiler pass.</li>
-      <li>If that doesn't happen, we can use AutoWire attribute of symfony.</li>
-      <li>Provide configuration options</li>
-      <li>Execute method</li>
-      <li>Styles in execute method</li>
-      <li>Dry run option. It allows to run command without mutating state of application.</li>
-      <li>Code in the terminal</li>
+      <li>Now, let's see the implementation of application using symfony/runtime.</li>
+      <li>As we saw earlier in symfony/runtime example, we will start with empty anonymous function and keep on filling details.</li>
+    </ul>
+  </aside>
+  <!-- Speaker note ends -->
+</section>
+
+<section>
+  <pre data-id="code-animation"><code class="hljs php" data-trim data-line-numbers="6-14">
+    #!/usr/bin/env php
+    
+    require_once dirname($GLOBALS['_composer_autoload_path']) . '/autoload_runtime.php';
+    
+    return static function (array $context) {
+      $loaders = ClassLoader::getRegisteredLoaders();
+      $classLoader = reset($loaders);
+      
+      chdir(\DRUPAL_ROOT);
+      $kernel = new DrupalKernel('prod', $classLoader, FALSE);
+      $kernel::bootEnvironment();
+      $kernel->setSitePath($context['DRUPAL_DEV_SITE_PATH'] ?? 'sites/default');
+      Settings::initialize($kernel->getAppRoot(), $kernel->getSitePath(), $classLoader);
+      $kernel->boot();
+    };
+  </code></pre>
+  <h6> Code of application file</h6>
+  
+  <!-- Speaker note starts -->
+  <aside class="notes">
+    <ul>
+      <li>In second step, we will boot the Drupal kernel</li>
+      <li>Create new instance of Drupal kernel.</li>
+      <li><code>bootEnvironment()</code> will setup consistent php environment by setting php environment variables.</li>
+      <li>Initialize the settings and boot kernel</li>
+    </ul>
+  </aside>
+  <!-- Speaker note ends -->
+</section>
+
+<section>
+  <pre data-id="code-animation"><code class="hljs php" data-trim data-line-numbers="16-24">
+    #!/usr/bin/env php
+    
+    require_once dirname($GLOBALS['_composer_autoload_path']) . '/autoload_runtime.php';
+    
+    return static function (array $context) {
+      $loaders = ClassLoader::getRegisteredLoaders();
+      $classLoader = reset($loaders);
+      
+      chdir(\DRUPAL_ROOT);
+      $kernel = new DrupalKernel('prod', $classLoader, FALSE);
+      $kernel::bootEnvironment();
+      $kernel->setSitePath($context['DRUPAL_DEV_SITE_PATH'] ?? 'sites/default');
+      Settings::initialize($kernel->getAppRoot(), $kernel->getSitePath(), $classLoader);
+      $kernel->boot();
+    
+      $request = Request::createFromGlobals();
+      $baseDomain = $context['HOST'] ?? NULL;
+      $basePort = $context['PORT'] ?? NULL;
+      if ($baseDomain !== NULL) {
+        $request->server->set('SERVER_NAME', $baseDomain);
+        if ($basePort !== NULL) {
+          $request->server->set('SERVER_PORT', $basePort);
+        }
+      }
+    };
+  </code></pre>
+  <h6> Code of application file</h6>
+  
+  <!-- Speaker note starts -->
+  <aside class="notes">
+    <ul>
+      <li>Since Drupal is highly dependent on the Request object, we are creating request object.</li>
+      <li>Using bunch of things from the $context variable</li>
+    </ul>
+  </aside>
+  <!-- Speaker note ends -->
+</section>
+
+<section>
+  <pre data-id="code-animation"><code class="hljs php" data-trim data-line-numbers="26-36">
+    #!/usr/bin/env php
+    
+    require_once dirname($GLOBALS['_composer_autoload_path']) . '/autoload_runtime.php';
+    
+    return static function (array $context) {
+      $loaders = ClassLoader::getRegisteredLoaders();
+      $classLoader = reset($loaders);
+      
+      chdir(\DRUPAL_ROOT);
+      $kernel = new DrupalKernel('prod', $classLoader, FALSE);
+      $kernel::bootEnvironment();
+      $kernel->setSitePath($context['DRUPAL_DEV_SITE_PATH'] ?? 'sites/default');
+      Settings::initialize($kernel->getAppRoot(), $kernel->getSitePath(), $classLoader);
+      $kernel->boot();
+    
+      $request = Request::createFromGlobals();
+      $baseDomain = $context['HOST'] ?? NULL;
+      $basePort = $context['PORT'] ?? NULL;
+      if ($baseDomain !== NULL) {
+        $request->server->set('SERVER_NAME', $baseDomain);
+        if ($basePort !== NULL) {
+          $request->server->set('SERVER_PORT', $basePort);
+        }
+      }
+    
+      $kernel->getContainer()->get('request_stack')->push($request);
+      $kernel->preHandle($request);
+
+      $app = new Application('dex', \Drupal::VERSION);
+      $app->setCommandLoader($kernel->getContainer()->get('console.command_loader'));
+      if ($kernel->getContainer()->hasParameter('console.command.ids')) {
+        foreach ($kernel->getContainer()->getParameter('console.command.ids') as $id) {
+          $app->add($kernel->getContainer()->get($id));
+        }
+      }
+      return $app;
+    };
+  </code></pre>
+  <h6> Code of application file</h6>
+  
+  <!-- Speaker note starts -->
+  <aside class="notes">
+    <ul>
+      <li>So in the last step, we push the request to request_stack service.</li>
+      <li>Call the `preHandle()`, it does request related initialization.</li>
+      <li>Get the command loader service we discussed earlier "console.command_loader" and set this as command loader for Console application object.</li>
+      <li>Get all the commands from "console.command.ids" service. Remember we stored those in Compiler pass implementation!</li>
+      <li>Call the `add()` method of console object and add command.</li>
     </ul>
   </aside>
   <!-- Speaker note ends -->

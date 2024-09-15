@@ -23,7 +23,7 @@
       <div class="item-icon">
         <img src="https://img.icons8.com/color/48/000000/computer.png" alt="Monitor Icon">
       </div>
-      <div>Adds a compiler pass to core</div>
+      <div>Add a compiler pass</div>
     </div>
     
     <div class="item fragment">
@@ -49,18 +49,18 @@
           <li>Adds bin file so it can be placed in vendor/bin, available in <em>PATH</em></li>
         </ul>
       </li>
+      <li>Add a compiler pass
+        <ul>
+          <li>Which scans src/Command/ directories in enabled extensions for commands, and creates tagged command services from them</li>
+          <li>Adds tagged command services to the "console.command_loader service registry"</li>
+        </ul>
+      </li>
       <li>Create a service that works as registry of command
         <ul>
           <li>We can call it as "console.command_loader"</li>
           <li>With this we register a service that acts as a command loader in the Symfony console component</li>
           <li>We can make it public, add a specific tag to control its behavior, and passing specific arguments to its constructor</li>
-          <li>This service is responsible for loading console commands in a lazy manner</li>
-        </ul>
-      </li>
-      <li>Adds a compiler pass to core
-        <ul>
-          <li>Which scans src/Command/ directories in enabled extensions for commands, and creates tagged command services from them</li>
-          <li>Adds tagged command services to the "console.command_loader service registry"</li>
+          <li>This service will responsible for loading console commands in a lazy manner</li>
         </ul>
       </li>
     </ol>

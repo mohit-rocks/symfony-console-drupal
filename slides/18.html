@@ -1,0 +1,42 @@
+<h1>Questions?</h1>
+<ul>
+  <li>Slides: </li>
+  <li>Github Code Repository: </li>
+  <li>X: @mohit-rocks</li>
+</ul>
+<!-- Speaker note starts -->
+<aside class="notes">
+  <ul>
+    <li>First of all, let’s see why we need Console commands considering we already have Drush.</li>
+    <li>The main intention is:
+      <ul>
+        <li>To provide a single entry point for which users can run the command</li>
+        <li>More aligned to Symfony eco-system which we’ve been adopting for quite some time</li>
+        <li>Having another tool in the arsenal is a good thing</li>
+        <li>We can also convert existing core/scripts/drupal  application to Console commands
+          <ul>
+            <li>This application is alredy powered by console</li>
+            <li>However, if we have something inbuilt in core, we can convert those to individual commands</li>
+            <li>We can even ship commands in Drupal core itself, like Symfony does</li>
+            <li>One use case can be, we can have recipe related commands that are out of the box in Drupal core itself</li>
+          </ul>
+        </li>
+        <li>It has additional features like various formatting options like table helper, questions helper, etc for various formatting options.
+          <ul>
+            <li>Apart from that, it has multiple components to format output like</li>
+            <li>Title</li>
+            <li>Section</li>
+            <li>Listing</li>
+            <li>Comment</li>
+            <li>Table etc </li>
+          </ul>
+        </li>
+        <li>Since commands are services you can run service from regular code like call the service directly etc.
+          <ul>
+            <li>Allows to run certain commands from UI</li>
+          </ul>
+      </ul>
+    </li>
+  </ul>
+</aside>
+<!-- Speaker note ends -->

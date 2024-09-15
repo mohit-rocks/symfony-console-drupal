@@ -1,13 +1,24 @@
-<h1>Summary</h1>
-<ul>
-  <li>Use the module or apply the patch</li>
-  <li><code>AsCommand</code> attribute for creating the commands</li>
-  <li>Test the command by creating command instance and pass to <code>CommandTester</code></li>
-</ul>
-<!-- Speaker note starts -->
-<aside class="notes">
-  <ul>
-    <li>First of all, let’s see why we need Console commands considering we already have Drush.</li>
-  </ul>
-</aside>
-<!-- Speaker note ends -->
+<h2>Testing console commands</h2>
+<section>
+  <pre data-id="code-animation">
+    <code class="hljs php" data-trim data-line-numbers>
+      $command = \Drupal::service('console.command.console_demo.service_argument');
+      $tester = new CommandTester($command);
+  
+      $tester->setInputs(['Mohit', TRUE]);
+      $code = $tester->execute(['argument' => 'foo', '--option-test' => TRUE]);
+      $this->assertStringContainsString('The current time is', $tester->getDisplay());
+    </code>
+  </pre>
+  
+  <!-- Speaker note starts -->
+  <aside class="notes">
+    <ul>
+      <li>Testing the console command is a straightforward approach.</li>
+      <li>Since all the console commands are registered as a service we need to fetch the service in pass in command tester class</li>
+      <li>So this is not a complex thing to test the commands</li>
+      <li>For additional testing in tables, Console has a test class (Symfony\Component\Console\Tests\Helper) https://github.com/symfony/console/blob/7.1/Tests/Helper/TableTest.php where we can refer additional tests.</li>
+    </ul>
+  </aside>
+  <!-- Speaker note ends -->
+</section>

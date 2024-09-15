@@ -9,8 +9,12 @@
   <aside class="notes">
     https://symfony.com/doc/current/components/runtime.html
     <ul>
+      <li>The brief introduction of the symfony/runtime</li>
       <li>Symfony/runtime decouples bootstrapping logic from global application state</li>
       <li>With that we can run the application in decoupled mode with php runtimes like React php, Swoole, PHP-PM etc.</li>
+      <li>What's the purpose of symfony/runtime here?</li>
+      <li>First, we will initialize an application from our binary and include the autoload_runtime.php</li>
+      <li>This autoload_runtime.php will find the appropriate runner the application instance that we created in our dex command's binary file</li>
       <li>Now, let's straight away jump on the code of dex_console module.</li>
       <li>In the code, we will review how compiler-pass works, how we have build binary file.</li>
       <li>So, let's get started with the compiler pass implementation in dex_console module.</li>

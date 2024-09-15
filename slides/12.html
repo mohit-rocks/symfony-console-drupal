@@ -1,21 +1,19 @@
 <section>
   <h2>Compiler pass in dex_console</h2>
   
-  <pre data-id="code-animation"><code class="hljs php" data-trim data-line-numbers="3-5|">
-    final class DexConsoleServiceProvider extends ServiceProviderBase {
+  <pre data-id="code-animation"><code class="hljs php" data-trim data-line-numbers="1-5">
+    final class DexCompilerPass implements CompilerPassInterface {
     
-      public function register(ContainerBuilder $container): void {
-        $container->addCompilerPass(new DexCompilerPass(), priority: 0);
-      }
+    public function process(ContainerBuilder $container): void {
+      // Further implementation.
     }
   </code></pre>
   
   <!-- Speaker note starts -->
   <aside class="notes">
     <ul>
-      <li>Compiler passes allow you to manipulate other service definitions registered with the service container.</li>
-      <li>In Drupal, we can simply implement new Service provider extending ServiceProviderBase and register new compiler pass in the container.</li>
-      <li>Let’s see how Compiler pass looks like.</li>
+      <li>Once we have registered the compiler pass, we need to implement the <code>process</code> method of the compiler pass</li>
+      <li>Let's see the implementation of process method.</li>
     </ul>
   </aside>
   <!-- Speaker note ends -->
@@ -127,7 +125,7 @@
       <li>Initially, we are starting with `getClass()` method.</li>
       <li>It is basically iterating over /src/Command folder and defined namespace and check the files that are declared with `AsCommand` attribute</li>
       <li>So in our snippet, we initialize the iterator, check for the classes that has AsCommand attribute.</li>
-      <li>Let's see the next step</li>
+      <li>It returns a generator</li>
       <li>Now, we will iterate through each class</li>
       <li>See if class implements the command base class</li>
       <li>Later create the service definition.</li>
@@ -140,8 +138,8 @@
       <li>ServiceLocatorTagPass is a utility class that helps manage service locators.</li>
       <li>Service locators are service containers designed to retrieve services lazily and efficiently.</li>
       <li>It is primarily used in dependency injection (DI) to handle services that should only be instantiated when needed</li>
-      <li>So in our case, we will create a service and assign lazycommandmap to the service</li>
-      <li>So we can load the services whenever required using `console.command_loader` service</li>
+      <li>In our case, we will create a service and assign lazycommandmap to the service</li>
+      <li>We can load the services whenever required using `console.command_loader` service</li>
       <li>Last step is we set `console.command.ids` with all service ids</li>
       <li>Why we need to do that?</li>
       <li>Because we will use that container param to load all the services</li>
