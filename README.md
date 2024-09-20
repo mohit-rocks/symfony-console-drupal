@@ -1,6 +1,38 @@
+# Symfony Console: Evolving Your Drupal Toolkit with Symfony Console Commands 
+
+This is a slideshow presentation repo for DrupalCon Barcelona 2024 session.
+[Symfony Console: Evolving Your Drupal Toolkit with Symfony Console Commands](https://events.drupal.org/barcelona2024/session/symfony-console-evolving-your-drupal-toolkit-symfony-console-commands)
+
+
+## How to use the slideshow
+
+This slideshow is hosted on GitHub actions pages.
+You can find it here https://mohit-rocks.github.io/symfony-console-drupal/
+
+## Accompanying code repository
+
+For the presentation, I've also prepared one sample Drupal project.
+Drupal repository contains the base Drupal setup and module which provides the command and tests.
+
+Code repository: https://github.com/mohit-rocks/console-command-demo/
+
+### How to use code repository
+1. [x] Above repository using using DDEV for the local setup.
+2. [x] You can run `ddev start` to kickstart the project.
+3. [x] `ddev composer install` to get the code base.
+4. [x] Enable `console_demo` module to see commands.
+5. [x] `ddev ssh`
+6. [x] Run `dex` to see all the commands.
+
+### Running tests using DDEV and PHPUnit
+Please refer following link to understand how we run PHPUnit tests in Drupal project.
+1. [Running Drupal's PHPUnit test suites on DDEV - Matt Glaman](https://mglaman.dev/blog/running-drupals-phpunit-test-suites-ddev)
+
+-----
+### Tool used for the slides
 <p align="center">
   <a href="https://revealjs.com">
-  <img src="https://hakim-static.s3.amazonaws.com/reveal-js/logo/v1/reveal-black-text-sticker.png" alt="reveal.js" width="500">
+  <img src="https://hakim-static.s3.amazonaws.com/reveal-js/logo/v1/reveal-black-text-sticker.png" alt="reveal.js" width="150">
   </a>
   <br><br>
   <a href="https://github.com/hakimel/reveal.js/actions"><img src="https://github.com/hakimel/reveal.js/workflows/tests/badge.svg"></a>
@@ -14,37 +46,3 @@ The framework comes with a powerful feature set including [nested slides](https:
 ---
 
 Want to create reveal.js presentation in a graphical editor? Try <https://slides.com>. It's made by the same people behind reveal.js.
-
----
-
-### Sponsors
-Hakim's open source work is supported by <a href="https://github.com/sponsors/hakimel">GitHub sponsors</a>. Special thanks to:
-<div align="center">
-  <table>
-    <td align="center">
-      <a href="https://workos.com/?utm_campaign=github_repo&utm_medium=referral&utm_content=revealjs&utm_source=github">
-        <div>
-          <img src="https://user-images.githubusercontent.com/629429/151508669-efb4c3b3-8fe3-45eb-8e47-e9510b5f0af1.svg" width="290" alt="WorkOS">
-        </div>
-        <b>Your app, enterprise-ready.</b>
-        <div>
-          <sub>Start selling to enterprise customers with just a few lines of code. Add Single Sign-On (and more) in minutes instead of months.</sup>
-        </div>
-      </a>
-    </td>
-  </table>
-</div>
-
----
-
-### Getting started
-- 🚀 [Install reveal.js](https://revealjs.com/installation)
-- 👀 [View the demo presentation](https://revealjs.com/demo)
-- 📖 [Read the documentation](https://revealjs.com/markup/)
-- 🖌 [Try the visual editor for reveal.js at Slides.com](https://slides.com/)
-- 🎬 [Watch the reveal.js video course (paid)](https://revealjs.com/course)
-
---- 
-<div align="center">
-  MIT licensed | Copyright © 2011-2024 Hakim El Hattab, https://hakim.se
-</div>
