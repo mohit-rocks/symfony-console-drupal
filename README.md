@@ -20,9 +20,10 @@ Code repository: https://github.com/mohit-rocks/console-command-demo/
 1. [x] Above repository using using DDEV for the local setup.
 2. [x] You can run `ddev start` to kickstart the project.
 3. [x] `ddev composer install` to get the code base.
-4. [x] Enable `console_demo` module to see commands.
-5. [x] `ddev ssh`
-6. [x] Run `dex` to see all the commands.
+4. [x] `ddev ssh`
+5. [x] Enable `console_demo` module to see commands.
+6. [x] `drush en console_demo -y`
+7. [x] Run `dex` to see all the commands.
 
 ### Running tests using DDEV and PHPUnit
 Please refer following link to understand how we run PHPUnit tests in Drupal project.
