@@ -15,9 +15,7 @@
       <li>What's the purpose of symfony/runtime here?</li>
       <li>First, we will initialize an application from our binary and include the autoload_runtime.php</li>
       <li>This autoload_runtime.php will find the appropriate runner the application instance that we created in our dex command's binary file</li>
-      <li>Now, let's straight away jump on the code of dex_console module.</li>
-      <li>In the code, we will review how compiler-pass works, how we have build binary file.</li>
-      <li>So, let's get started with the compiler pass implementation in dex_console module.</li>
+      <li>Now, let's quickly see the code of autoload_runtime.php</li>
     </ul>
   </aside>
   <!-- Speaker note ends -->
@@ -69,6 +67,9 @@
           <li>Line 18-21 will find the resolver and will call the resolve method</li>
           <li>Later we initialize the application with te arguments.</li>
           <li>On line 22-27, we will get the runner for the application and eventually runtime will run the application.</li>
+          <li>Now, let's straight away jump into dex_console code.</li>
+          <li>In the code, we will review how compiler-pass works, how we have build binary file.</li>
+          <li>So, let's get started with the compiler pass implementation in dex_console module.</li>
         </ul>
       </li>
     </ul>
